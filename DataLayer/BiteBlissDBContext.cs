@@ -1,4 +1,5 @@
 ﻿using BusinessLayer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -29,9 +30,16 @@ namespace DataLayer
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<IdentityRole>().HasData(
+                new IdentityRole("Administrator") { NormalizedName = "ADMINISTRATOR" },
+                new IdentityRole("User") { NormalizedName = "USER" });
+
+            modelBuilder.Entity<IdentityUser>().HasData(
+                new IdentityUser("Admin") { NormalizedUserName = "ADMIN" });
         }
 
-        public DbSet<User> Users { get; set; }
+        //public DbSet<User> Users { get; set; }
 
         public DbSet<Category> Categories { get; set; }
 

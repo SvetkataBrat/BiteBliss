@@ -11,10 +11,6 @@ namespace BusinessLayer
 {
     public class User : IdentityUser
     {
-        //[Key]
-        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        //public int Id { get; set; }
-
         [Required]
         public string FirstName { get; set; }
 
@@ -25,7 +21,8 @@ namespace BusinessLayer
         [RegularExpression("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", ErrorMessage = "Incorrect email!")]
         public override string Email { get; set; }
 
-        // Add img for pfp
+        [Required]
+        public byte[] ProfilePicture { get; set; }
 
         public List<Recipe> Recipes { get; set; }
 
