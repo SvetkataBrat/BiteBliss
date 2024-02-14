@@ -1,4 +1,5 @@
 ﻿using BusinessLayer;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DataLayer
 {
-    public class BiteBlissDBContext : DbContext
+    public class BiteBlissDBContext : IdentityDbContext<User>
     {
 
         public BiteBlissDBContext() : base() { }

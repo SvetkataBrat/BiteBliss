@@ -5,14 +5,15 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 
 namespace BusinessLayer
 {
-    public class User
+    public class User : IdentityUser
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        //[Key]
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        //public int Id { get; set; }
 
         [Required]
         public string FirstName { get; set; }
@@ -22,12 +23,7 @@ namespace BusinessLayer
 
         [Required]
         [RegularExpression("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", ErrorMessage = "Incorrect email!")]
-        public string Email { get; set; }
-
-        [Required]
-        public DateOnly DateOfBirth { get; set; }
-
-        // Add type of User (admin/normal)
+        public override string Email { get; set; }
 
         // Add img for pfp
 
@@ -38,12 +34,12 @@ namespace BusinessLayer
             this.Recipes = new List<Recipe>();
         }
 
-        public User(string firstName_, string lastName_, string email_, DateOnly dateOfBirth_)
+        public User(string firstName_, string lastName_, string username_, string email_)
         {
             this.FirstName = firstName_;
             this.LastName = lastName_;
+            this.UserName = username_;
             this.Email = email_;
-            this.DateOfBirth = dateOfBirth_;
             this.Recipes = new List<Recipe>();
         }
     }
