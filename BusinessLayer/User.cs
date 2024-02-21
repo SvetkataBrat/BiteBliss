@@ -6,21 +6,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using System.IO;
+using System.Net.Http;
+using System.Diagnostics;
 
 namespace BusinessLayer
 {
     public class User : IdentityUser
     {
-        [Required]
-        public string FirstName { get; set; }
-
-        [Required]
-        public string LastName { get; set; }
-
-        [Required]
-        [RegularExpression("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", ErrorMessage = "Incorrect email!")]
-        public override string Email { get; set; }
-
         [Required]
         public byte[] ProfilePicture { get; set; }
 
@@ -31,13 +24,12 @@ namespace BusinessLayer
             this.Recipes = new List<Recipe>();
         }
 
-        public User(string firstName_, string lastName_, string username_, string email_)
+        public User(string username_, string email_)
         {
-            this.FirstName = firstName_;
-            this.LastName = lastName_;
             this.UserName = username_;
             this.Email = email_;
             this.Recipes = new List<Recipe>();
+            this.ProfilePicture = System.IO.File.ReadAllBytes("\\MVCApplication\\bin\\Debug\\net6.0\\Images\\ProfilePicture.png");
         }
     }
 }

@@ -20,28 +20,118 @@ namespace DataLayer
             this.userManager = userManager_;
             this.context = context_;
         }
-
-        public async Task SeedDataAsync(string adminPass, string adminEmail)
+        public async Task<User> LogInUserAsync(string username, string password)
         {
-            int userRoles = await context.UserRoles.CountAsync();
-
-            if (userRoles == 0)
+            try
             {
-                await ConfigureAdminAccountAsync(adminPass, adminEmail);
+                User user = await userManager.FindByNameAsync(username);
+
+                if (user == null)
+                {
+                    return null;
+                }
+
+                IdentityResult result = await userManager.PasswordValidators[0].ValidateAsync(userManager, user, password);
+
+                if (result.Succeeded)
+                {
+                    return await context.Users.FindAsync(user.Id);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
         }
 
-        public async Task ConfigureAdminAccountAsync(string password, string email)
+        public async Task<User> ReadUserAsync(string key, bool useNavigationalProperties = false)
         {
-            User adminIdentityUser = await context.Users.FindAsync();
-
-            if (adminIdentityUser != null)
+            try
             {
-                await userManager.AddToRoleAsync(adminIdentityUser, Role.Administrator.ToString());
-                await userManager.AddPasswordAsync(adminIdentityUser, password);
-                await userManager.SetEmailAsync(adminIdentityUser, email);
+                if (!useNavigationalProperties)
+                {
+                    return await userManager.FindByIdAsync(key);
+                }
+                else
+                {
+                    return await context.Users.Include(u => u.Recipes).SingleOrDefaultAsync(u => u.Id == key);
+                }
             }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
+        public async Task<IEnumerable<User>> ReadAllUsersAsync(bool useNavigationalProperties = false)
+        {
+            try
+            {
+                if (!useNavigationalProperties)
+                {
+                    return await context.Users.ToListAsync();
+                }
+
+                return await context.Users.Include(u => u.Recipes).ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task UpdateUserAsync(string id, string username, string phone)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(username))
+                {
+                    User user = await context.Users.FindAsync(id);
+                    user.UserName = username;
+                    user.PhoneNumber = phone;
+                    await userManager.UpdateAsync(user);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task DeleteUserByNameAsync(string name)
+        {
+            try
+            {
+                User user = await FindUserByNameAsync(name);
+
+                if (user == null)
+                {
+                    throw new InvalidOperationException("User not found for deletion!");
+                }
+
+                await userManager.DeleteAsync(user);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<User> FindUserByNameAsync(string name)
+        {
+            try
+            {
+                return await userManager.FindByNameAsync(name);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
+}
 }
