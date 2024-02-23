@@ -15,11 +15,44 @@ namespace DataLayer
         UserManager<User> userManager;
         BiteBlissDBContext context;
 
-        public IdentityContext(UserManager<User> userManager_, BiteBlissDBContext context_)
+        public IdentityContext(BiteBlissDBContext context, UserManager<User> userManager)
         {
-            this.userManager = userManager_;
-            this.context = context_;
+            this.context = context;
+            this.userManager = userManager;
         }
+
+        public async Task<IdentityResultSet<User>> CreateUserAsync(string username, string password, string email, Role role)
+        {
+            try
+            {
+                User user = new User(username, email);
+                IdentityResult result = await userManager.CreateAsync(user, password);
+
+                if (!result.Succeeded)
+                {
+                    return new IdentityResultSet<User>(result, user);
+                }
+
+                if (role == Role.Administrator)
+                {
+                    await userManager.AddToRoleAsync(user, Role.Administrator.ToString());
+                }
+                else
+                {
+                    await userManager.AddToRoleAsync(user, Role.User.ToString());
+                }
+
+                return new IdentityResultSet<User>(IdentityResult.Success, user);
+            }
+            catch (Exception ex)
+            {
+                IdentityResult identityResult = IdentityResult.Failed(new IdentityError()
+                { Code = "Registration", Description = ex.Message });
+
+                return new IdentityResultSet<User>(identityResult, null);
+            }
+        }
+
         public async Task<User> LogInUserAsync(string username, string password)
         {
             try
@@ -84,7 +117,7 @@ namespace DataLayer
             }
         }
 
-        public async Task UpdateUserAsync(string id, string username, string phone)
+        public async Task UpdateUserAsync(string id, string username, string email, string phone)
         {
             try
             {
@@ -92,6 +125,7 @@ namespace DataLayer
                 {
                     User user = await context.Users.FindAsync(id);
                     user.UserName = username;
+                    user.Email = email;
                     user.PhoneNumber = phone;
                     await userManager.UpdateAsync(user);
                 }
@@ -133,5 +167,4 @@ namespace DataLayer
             }
         }
     }
-}
 }

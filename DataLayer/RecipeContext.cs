@@ -1,4 +1,5 @@
 ﻿using BusinessLayer;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,36 +10,85 @@ namespace DataLayer
 {
     public class RecipeContext : IDb<Recipe, int>
     {
-        private BiteBlissDBContext context;
+        private BiteBlissDBContext dBContext;
 
         public RecipeContext(BiteBlissDBContext context)
         {
-            this.context = context;
+            this.dBContext = context;
         }
 
-        public Task CreateAsync(Recipe item)
+        public async Task CreateAsync(Recipe item)
         {
-            throw new NotImplementedException();
+            try
+            {
+                dBContext.Recipies.Add(item);
+                await dBContext.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
-        public Task DeleteAsync(int key)
+        public async Task DeleteAsync(int key)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Recipe recipeFromDb = await ReadAsync(key, true, false);
+                dBContext.Recipies.Remove(recipeFromDb);
+                await dBContext.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
-        public Task<ICollection<Recipe>> ReadAllAsync(bool useNavigationalProperties = false, bool isReadOnly = true)
+        public async Task<ICollection<Recipe>> ReadAllAsync(bool useNavigationalProperties = false, bool isReadOnly = true)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return await dBContext.Recipies.ToListAsync();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
-        public Task<Recipe> ReadAsync(int key, bool useNavigationalProperties = false, bool isReadOnly = true)
+        public async Task<Recipe> ReadAsync(int key, bool useNavigationalProperties = false, bool isReadOnly = true)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return await dBContext.Recipies.FindAsync(key);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
-        public Task UpdateAsync(Recipe item, bool useNavigationalProperties = false, bool isReadOnly = true)
+        public async Task UpdateAsync(Recipe item, bool useNavigationalProperties = false, bool isReadOnly = true)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Recipe recipeFromDb = await ReadAsync(item.Id, useNavigationalProperties, false);
+
+                if (recipeFromDb == null) { await CreateAsync(item); }
+
+                dBContext.Entry(recipeFromDb).CurrentValues.SetValues(item);
+
+                if (useNavigationalProperties)
+                {
+                    recipeFromDb.User = item.User;
+                }
+
+                await dBContext.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

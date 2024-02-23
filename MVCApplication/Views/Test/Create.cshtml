@@ -1,0 +1,36 @@
+﻿@using MVCApplication.Views.Recipes;
+@model BufferedSingleFileUploadDbModel
+
+@{
+    ViewData["Title"] = "Test";
+}
+
+<h1>Create</h1>
+
+<h4>Recipe</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">  
+        <form enctype="multipart/form-data" method="post">
+            <dl>
+                <dt>
+                    <label asp-for="FileUpload.FormFile"></label>
+                </dt>
+                <dd>
+                    <input asp-for="FileUpload.FormFile" type="file">
+                </dd>
+            </dl>
+            <input asp-page-handler="Upload" class="btn" type="submit" value="Upload">
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

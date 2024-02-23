@@ -1,0 +1,7 @@
+TODO:
+
+#1:
+	Add view and change prifile picture on user click
+
+#2:
+	Add change for text and image in Recipies -> Edit and Create

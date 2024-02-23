@@ -14,8 +14,7 @@ namespace BusinessLayer
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [Required]
-        public byte[] Banner { get; set; }
+        public byte[]? Banner { get; set; }
 
         [Required]
         [StringLength(50, ErrorMessage = "Title is too long!")]
@@ -30,7 +29,7 @@ namespace BusinessLayer
         public string Instructions { get; set; }
 
         [Required]
-        public DateOnly DateOfPublish { get; set; }
+        public DateTime DateOfPublish { get; set; }
 
         [Required]
         public Category @Category { get; set; }
@@ -44,20 +43,17 @@ namespace BusinessLayer
 
         [Required]
         [ForeignKey("User")]
-        public int UserId { get; set; }
+        public string UserId { get; set; }
 
         public Recipe() { }
 
-        public Recipe(string title_, string description_, string instructions_, DateOnly dateOfPublish_, Category category_, User user_)
+        public Recipe(string title_, string description_, string instructions_, Category category_, User user_)
         {
             this.Title = title_;
             this.Description = description_;
             this.Instructions = instructions_;
-            this.DateOfPublish = dateOfPublish_;
             this.Category = category_;
             this.User = user_;
-            this.Banner = System.IO.File.ReadAllBytes("\\MVCApplication\\bin\\Debug\\net6.0\\Images\\DefaultRecipeBanner.png");
         }
-
     }
 }

@@ -16,3 +16,27 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.allrecipe-container {
+    width: 70%;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 auto;
+}
+
+.recipe-container {
+    flex-basis: 20%;
+    min-width: 250px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    margin: 1%;
+    padding: 0.5%;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.recipe-container img {
+    width: 80%;
+}

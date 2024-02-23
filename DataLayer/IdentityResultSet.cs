@@ -17,5 +17,10 @@ namespace DataLayer
             IdentityResult = identityResult;
             Entity = entity;
         }
+
+        public override string ToString()
+        {
+            return Entity.ToString();
+        }
     }
 }

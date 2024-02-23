@@ -7,7 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLayer", "BusinessLa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataLayer", "DataLayer\DataLayer.csproj", "{DB30EB3A-FE7D-4623-86C5-94C494B612B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVCApplication", "MVCApplication\MVCApplication.csproj", "{8CDE427C-53AE-4E8D-9844-0C17B41C8D5D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MVCApplication", "MVCApplication\MVCApplication.csproj", "{8CDE427C-53AE-4E8D-9844-0C17B41C8D5D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceLayer", "ServiceLayer\ServiceLayer.csproj", "{ED8D4D09-0560-4DFF-A28F-8406344FF3D0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeedingLayer", "SeedingLayer\SeedingLayer.csproj", "{4C2DBAE7-A8AE-43AD-AD56-CA2BC6304A19}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +31,14 @@ Global
 		{8CDE427C-53AE-4E8D-9844-0C17B41C8D5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8CDE427C-53AE-4E8D-9844-0C17B41C8D5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8CDE427C-53AE-4E8D-9844-0C17B41C8D5D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED8D4D09-0560-4DFF-A28F-8406344FF3D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED8D4D09-0560-4DFF-A28F-8406344FF3D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED8D4D09-0560-4DFF-A28F-8406344FF3D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED8D4D09-0560-4DFF-A28F-8406344FF3D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C2DBAE7-A8AE-43AD-AD56-CA2BC6304A19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C2DBAE7-A8AE-43AD-AD56-CA2BC6304A19}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C2DBAE7-A8AE-43AD-AD56-CA2BC6304A19}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C2DBAE7-A8AE-43AD-AD56-CA2BC6304A19}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

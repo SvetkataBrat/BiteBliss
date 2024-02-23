@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using System.IO;
 using System.Net.Http;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 
 namespace BusinessLayer
 {
@@ -29,7 +30,12 @@ namespace BusinessLayer
             this.UserName = username_;
             this.Email = email_;
             this.Recipes = new List<Recipe>();
-            this.ProfilePicture = System.IO.File.ReadAllBytes("\\MVCApplication\\bin\\Debug\\net6.0\\Images\\ProfilePicture.png");
+            this.ProfilePicture = System.IO.File.ReadAllBytes("D:\\zz_Timi\\aa__SoftUni-C#\\Projects\\Exercises\\Tests\\BiteBliss\\MVCApplication\\DefaultImages\\ProfilePicture.jpg");
+        }
+
+        public override string ToString()
+        {
+            return $"UserName: {this.UserName} \nEmail: {this.Email}";
         }
     }
 }
