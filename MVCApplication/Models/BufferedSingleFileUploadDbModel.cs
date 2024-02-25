@@ -15,8 +15,7 @@ namespace MVCApplication.Views.Recipes
 
     public class BufferedSingleFileUploadDb
     {
-        [Required]
-        [Display(Name = "ModelBanner")]
+        [Display(Name = "Mazna")]
         public IFormFile FormFile { get; set; }
     }
 }

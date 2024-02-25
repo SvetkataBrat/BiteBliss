@@ -10,6 +10,7 @@ using DataLayer;
 using MVCApplication.Views.Recipes;
 using MVCApplication.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.IO;
 
 namespace MVCApplication.Controllers
 {
@@ -70,15 +71,16 @@ namespace MVCApplication.Controllers
             Recipe recipe = new Recipe(model.curRecipe.Title, model.curRecipe.Description, model.curRecipe.Instructions, model.curRecipe.Category, model.curRecipe.User);
             recipe.DateOfPublish = DateTime.Now;
             ModelState.Clear();
+            if (model.FileUpload == null)
+            {
+                model.FileUpload = new BufferedSingleFileUploadDb();
+                var stream = System.IO.File.OpenRead("./DefaultImages/defaultRecipeBanner.png");
+                model.FileUpload.FormFile = new FormFile(stream, 0, stream.Length, null, Path.GetFileName(stream.Name));
+            }
             if (TryValidateModel(model))
             {
                 using (var memoryStream = new MemoryStream())
                 {   
-                    if (model.FileUpload.FormFile == null)
-                    {
-                        //make it add default banner
-                        //recipe.Banner = 
-                    }
                     await model.FileUpload.FormFile.CopyToAsync(memoryStream);
 
                     if (memoryStream.Length < 20971520)
@@ -103,6 +105,7 @@ namespace MVCApplication.Controllers
         [Authorize(Roles = "Administrator, User")]
         public async Task<IActionResult> Edit(int? id)
         {
+            //Add authorization for the spcific user
             if (id == null || _context.Recipies == null)
             {
                 return NotFound();
