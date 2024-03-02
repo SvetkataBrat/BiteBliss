@@ -23,7 +23,7 @@ namespace MVCApplication
             services.AddControllersWithViews();
             services.AddRazorPages();
             
-            //services.AddScoped<RecipeContext, RecipeContext>();
+            services.AddScoped<RecipeContext, RecipeContext>();
             services.AddScoped<IdentityManager, IdentityManager>();
             services.AddScoped<IdentityContext, IdentityContext>();
             services.AddScoped<IEmailSender, EmailSenderManager>();

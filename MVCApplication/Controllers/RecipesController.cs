@@ -24,6 +24,7 @@ namespace MVCApplication.Controllers
         }
 
         // GET: Recipes
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Index()
         {
             var biteBlissDBContext = _context.Recipies.Include(r => r.Category).Include(r => r.User);
@@ -38,11 +39,12 @@ namespace MVCApplication.Controllers
             {
                 return NotFound();
             }
-
+            
             var recipe = await _context.Recipies
                 .Include(r => r.Category)
                 .Include(r => r.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (recipe == null)
             {
                 return NotFound();
@@ -87,6 +89,9 @@ namespace MVCApplication.Controllers
                     {
                         recipe.Banner = memoryStream.ToArray();
                         _context.Recipies.Add(recipe);
+                        User userFromDb = _context.Users.Find(recipe.UserId);
+                        userFromDb.Recipes = recipe.User.Recipes;
+                        _context.Update(userFromDb);
                         await _context.SaveChangesAsync();
                         return RedirectToAction(nameof(Index));
                     }

@@ -1,7 +1,7 @@
 TODO:
 
 #1:
-	Add view and change prifile picture on user click
-
-#2:
-	Add change for text and image in Recipies -> Edit and Create
+	Add go back to default profile picture for user and recipe
+#2: 
+	Dont show the change for instructions
+#3:

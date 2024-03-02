@@ -4,7 +4,7 @@
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 
-<ul class="navbar-nav" style="height:40px">
+<ul class="navbar-nav" style="height:50px;">
 @if (SignInManager.IsSignedIn(User))
 {
     if (await UserManager.IsInRoleAsync(await SignInManager.UserManager.GetUserAsync(User), "Administrator"))
@@ -19,7 +19,7 @@
             var base64 = Convert.ToBase64String(user.ProfilePicture);
             var Image = String.Format("data:image/gif;base64,{0}", base64);
             <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage"> 
-                <img src="@Image" alt="avatar" class="rounded-circle" style="width: 30px" /> Hello @UserManager.GetUserName(User)!
+                <img src="@Image" alt="avatar" class="profile-picture" /> Hello @UserManager.GetUserName(User)!
             </a>
         }
     </li>

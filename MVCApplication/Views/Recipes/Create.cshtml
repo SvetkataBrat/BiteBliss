@@ -11,6 +11,10 @@
     ViewData["Title"] = "Create";
 }
 
+<head>
+    <link rel="stylesheet" type="text/css" href="~/css/recipies.css" />
+</head>
+
 <h1>Create</h1>
 
 <h4>Recipe</h4>
@@ -19,28 +23,28 @@
     <div class="col-md-4">
         <form asp-action="Create" EncType="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="FileUpload.FormFile" class="control-label"></label>
-                <input asp-for="FileUpload.FormFile" type="file" accept="image/png, image/jpeg">
+            <div class="form-group" style="margin-top: 5px; margin-bottom: 5px">
+                <label asp-for="FileUpload.FormFile" class="control-label" style="display:inline">Profile Picture</label>
+                <input asp-for="FileUpload.FormFile" type="file" id="img-input" accept="image/png, image/jpeg">
                 <span asp-validation-for="FileUpload.FormFile" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group" style="margin-top: 5px; margin-bottom: 5px">
                 <label asp-for="curRecipe.Title" class="control-label"></label>
-                <input asp-for="curRecipe.Title" class="form-control" />
+                <input asp-for="curRecipe.Title" class="form-control" id="title"/>
                 <span asp-validation-for="curRecipe.Title" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group" style="margin-top: 5px; margin-bottom: 5px">
                 <label asp-for="curRecipe.Description" class="control-label"></label>
-                <input asp-for="curRecipe.Description" class="form-control" />
+                <input asp-for="curRecipe.Description" class="form-control" id="description"/>
                 <span asp-validation-for="curRecipe.Description" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group" style="margin-top: 5px; margin-bottom: 5px">
                 <label asp-for="curRecipe.Instructions" class="control-label"></label>
-                <input asp-for="curRecipe.Instructions" class="form-control" />
+                <textarea asp-for="curRecipe.Instructions" class="form-control" rows="8" resize="none" id="instructions"></textarea> <!--op barona-->
                 <span asp-validation-for="curRecipe.Instructions" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="curRecipe.Category.Name" class="control-label"></label>
+            <div class="form-group" style="margin-top: 5px; margin-bottom: 5px">
+                <label asp-for="curRecipe.Category" class="control-label"></label>
                 <select asp-for="curRecipe.CategoryId" class ="form-control" asp-items="ViewBag.CategoryId"></select>
             </div>
             <div class="form-group">
@@ -50,25 +54,23 @@
                 }
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-primary" id="submitButton"/>
             </div>
         </form>
     </div>
     <div class="col-md-8">
         <div class="recipe-container-edit">
             @{
-
-                //var base64 = Convert.ToBase64String(Model.curRecipe.Banner);
-                //var Image = String.Format("data:image/gif;base64,{0}", base64);
-                //<img src="@Image">
+                var Image = System.IO.File.ReadAllBytes("../MVCApplication/DefaultImages/defaultRecipeBanner.png");
+                var base64 = Convert.ToBase64String(Image);
+                var Image_ = String.Format("data:image/gif;base64,{0}", base64);
+                <img src="@Image_" style="width: 80%"/>
             }
-            <div class="name">
-                <h2>Name</h2>
+            <div class="recipe-title">
+                <h2 id="title-val" style="font-size: 3em;"></h2>
             </div>
-            <div class="info">
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore labore corrupti saepe ullam minus.
-                    Incidunt soluta officia, cumque ea sequi suscipit, voluptate cum obcaecati eaque quibusdam quam
-                    cupiditate fuga commodi.</p>
+            <div class="recipe-description">
+                <p  id="description-val"></p>
             </div>
         </div>
     </div>
@@ -77,6 +79,33 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+
+<script>
+    document.getElementById("title").addEventListener("keyup", ChangeValueForTitle);
+    function ChangeValueForTitle() {
+        var elementValue = document.getElementById("title").value;
+        document.getElementById("title-val").innerHTML = elementValue;
+    }
+    document.getElementById("description").addEventListener("keyup", ChangeValueForDescription);
+    function ChangeValueForDescription() {
+        var elementValue = document.getElementById("description").value;
+        document.getElementById("description-val").innerHTML = elementValue;
+    }
+    function GFG_Fun() {
+        if ($('#img-input')[0].files.length === 0) {
+            
+        } else {
+            down.innerHTML = "Some file is selected";
+        }
+    }
+    var textInput = document.getElementById('instructions');
+    document.getElementById('submitButton').addEventListener("click", (event) => {
+        var text = document.getElementById('instructions');
+        text.value = text.value.replace(/\n/g, '<br>');  // <-- THIS FIXES THE LINE BREAKS
+        //console.log(text);
+        //document.getElementById('description-val').innerHTML = text;
+    });
+</script>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

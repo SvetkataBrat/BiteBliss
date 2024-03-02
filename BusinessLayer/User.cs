@@ -30,7 +30,7 @@ namespace BusinessLayer
             this.UserName = username_;
             this.Email = email_;
             this.Recipes = new List<Recipe>();
-            this.ProfilePicture = System.IO.File.ReadAllBytes("D:\\zz_Timi\\aa__SoftUni-C#\\Projects\\Exercises\\Tests\\BiteBliss\\MVCApplication\\DefaultImages\\ProfilePicture.jpg");
+            this.ProfilePicture = System.IO.File.ReadAllBytes("./DefaultImages/ProfilePicture.jpg");
         }
 
         public override string ToString()

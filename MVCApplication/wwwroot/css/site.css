@@ -1,10 +1,41 @@
+*{
+    font-family:'Quicksand';
+}
+
 html {
-  font-size: 14px;
+  font-size: 16px;
+}
+
+#recipe-create-link {
+    background-color: rgb(29, 105, 245);
+    text-decoration: none;
+    color: white;
+    border-radius: 6px;
+    transition: all 0.2s ease-out;
+}
+
+#recipe-create-link:hover{
+    background-color: deepskyblue;
+}
+
+input[type=file]::file-selector-button {
+    margin-right: 20px;
+    border: none;
+    background: #0d6efd;
+    padding: 8px 15px;
+    border-radius: 6px;
+    color: #fff;
+    cursor: pointer;
+    transition: background .2s ease-in-out;
+}
+
+input[type=file]::file-selector-button:hover {
+    background: #0d45a5;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
+    html {
+    font-size: 18px;
   }
 }
 
@@ -17,26 +48,93 @@ body {
   margin-bottom: 60px;
 }
 
-.allrecipe-container {
+.profile-picture {
+    width: 25px;
+    height: 25px;
+    object-fit: cover;
+    border-radius: 30px
+}
+
+.profile-picture-view {
+    width: 100%;
+    aspect-ratio: 1/1;
+    overflow: hidden;
+    object-fit: cover;
+}
+.manage-index-con-img {
+    width: 20%;
+}
+
+.manage-index-con-input {
+    width: 80%;
+    margin-left: 3%;
+}
+
+.manage-index-con-input > div{
     width: 70%;
+    margin: 1%;
+}
+
+.recipe-details-container {
     display: flex;
-    flex-wrap: wrap;
+    width: 75%;
     margin: 0 auto;
 }
 
-.recipe-container {
-    flex-basis: 20%;
-    min-width: 250px;
+.recipe-details-container-img {
+    width: 55%;
+    padding: 10px;
+}
+
+.recipe-details-container-img img {
+    width: 80%;
+    margin: 0 20%;
+}
+
+.recipe-details-container-info {
+    width: 45%;
     display: flex;
     flex-direction: column;
-    border: 1px solid black;
-    margin: 1%;
-    padding: 0.5%;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
     text-align: center;
 }
 
-.recipe-container img {
-    width: 80%;
+.rec-title p {
+    font-size: 20px;
+}
+
+.rec-desc p {
+    font-size: 15px;
+}
+
+.rec-isntr p {
+    font-size: 15px;
+}
+
+@media(max-width: 989px) {
+    .manage-index-con {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .manage-index-con-img {
+        width: 60%;
+    }
+
+    .manage-index-con-input {
+        width: 100%;
+    }
+
+    .manage-index-con-input > div {
+        width: 90%;
+    }
+}
+
+@media(max-width: 767px) {
+    .manage-index-con-img {
+        width: 80%;
+    }
 }
