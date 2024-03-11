@@ -28,11 +28,11 @@
                         <input asp-for="Email" class="form-control" disabled />
                         <label asp-for="Email" class="form-label"></label>
                     </div>
-                    <div class="form-group">
-                        <label asp-for="FileUpload.FormFile" class="control-label">Profile Picture</label>
-                        <input asp-for="FileUpload.FormFile" type="file" id="img-input" accept="image/png, image/jpeg">
-                        <span asp-validation-for="FileUpload.FormFile" class="text-danger"></span>
-                    </div>
+                        <div class="form-group">
+                            <label asp-for="FileUpload.FormFile" class="control-label">Profile Picture</label>
+                            <input asp-for="FileUpload.FormFile" type="file" id="img-input" accept="image/png, image/jpeg">
+                            <span asp-validation-for="FileUpload.FormFile" class="text-danger"></span>
+                        </div>
                     <div class="form-group">
                         <input type="submit" value="Update Profile" class="btn btn-primary" />
                     </div>

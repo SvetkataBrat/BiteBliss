@@ -39,6 +39,11 @@
                 <span asp-validation-for="curRecipe.Description" class="text-danger"></span>
             </div>
             <div class="form-group" style="margin-top: 5px; margin-bottom: 5px">
+                <label asp-for="curRecipe.Ingredients" class="control-label"></label>
+                <textarea asp-for="curRecipe.Ingredients" class="form-control" rows="8" resize="none" id="ingredients"></textarea> <!--op barona-->
+                <span asp-validation-for="curRecipe.Ingredients" class="text-danger"></span>
+            </div>
+            <div class="form-group" style="margin-top: 5px; margin-bottom: 5px">
                 <label asp-for="curRecipe.Instructions" class="control-label"></label>
                 <textarea asp-for="curRecipe.Instructions" class="form-control" rows="8" resize="none" id="instructions"></textarea> <!--op barona-->
                 <span asp-validation-for="curRecipe.Instructions" class="text-danger"></span>
@@ -101,6 +106,13 @@
     var textInput = document.getElementById('instructions');
     document.getElementById('submitButton').addEventListener("click", (event) => {
         var text = document.getElementById('instructions');
+        text.value = text.value.replace(/\n/g, '<br>');  // <-- THIS FIXES THE LINE BREAKS
+        //console.log(text);
+        //document.getElementById('description-val').innerHTML = text;
+    });
+    var textInput = document.getElementById('ingredients');
+    document.getElementById('submitButton').addEventListener("click", (event) => {
+        var text = document.getElementById('ingredients');
         text.value = text.value.replace(/\n/g, '<br>');  // <-- THIS FIXES THE LINE BREAKS
         //console.log(text);
         //document.getElementById('description-val').innerHTML = text;

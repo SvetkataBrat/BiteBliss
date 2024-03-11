@@ -1,5 +1,10 @@
 ﻿@model IEnumerable<BusinessLayer.User>
 
+@using BusinessLayer;
+@using Microsoft.AspNetCore.Identity;
+
+@inject UserManager<User> UserManager
+
 @{
     ViewData["Title"] = "Index";
 }
@@ -22,6 +27,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Recipes)
             </th>
+            <th>
+                Role
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -42,6 +50,12 @@
                             data += i.Title + ", ";
                     }
                     @data
+                </td>
+                <td>
+                    @{
+                        IList<string> role = await UserManager.GetRolesAsync(item);
+                    }  
+                    @role.FirstOrDefault();
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

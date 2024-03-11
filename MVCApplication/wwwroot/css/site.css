@@ -112,6 +112,62 @@ body {
     font-size: 15px;
 }
 
+.sidebar {
+    width: 17%;
+    position: fixed;
+    box-shadow: 2px 2px rgba(128, 128, 128, 0.377);
+    padding-top: 50px;
+    padding-bottom: 175px;
+    height: 100vh;
+    z-index: 0;
+}
+
+.sidebar a{
+    width: 70%;
+    margin: 0 15%;
+}
+
+.sidebar > h2 {
+    margin-bottom: 70px;
+    font-size: 1.3em;
+}
+
+.sidebar > ul {
+    list-style: none;
+}
+
+.sidebar > ul li {
+    font-weight: 100;
+}
+
+.filter-type {
+    width: 85%;
+    padding-left: 0;
+}
+
+.filter-type > h3{
+    font-size: 1.1em;
+}
+
+.filter-type-title {
+    text-transform: uppercase;
+}
+
+.filter-type-content {
+    list-style-type: none;
+    width: 85%;
+}
+
+.ftc-item > label{
+    font-size: 1em;
+    font-weight: 300;
+    color: black;
+}
+
+.ftc-item *{
+    cursor:pointer;
+}
+
 @media(max-width: 989px) {
     .manage-index-con {
         display: flex;

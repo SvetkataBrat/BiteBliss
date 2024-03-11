@@ -9,7 +9,7 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+<table class="table" id="_body">
     <thead>
         <tr>
             <th style="width:12.5%;">
@@ -52,7 +52,7 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.Description)
                     </td>
-                    <td>
+                    <td class="instrs">
                         @Html.DisplayFor(modelItem => item.Instructions)
                     </td>
                     <td>
@@ -76,3 +76,16 @@
         }
     </tbody>
 </table>
+
+<script>
+    var allElemets = document.getElementsByClassName('instrs');
+
+    document.getElementById('_body').addEventListener('load', loadData());
+
+    function loadData(){
+        for(var i = 0; i < allElemets.length; i++){
+            allElemets[i].innerHTML = allElemets[i].innerText;
+        }
+        
+    }
+</script>

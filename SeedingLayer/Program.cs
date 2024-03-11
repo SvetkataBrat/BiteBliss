@@ -48,7 +48,7 @@ namespace SeedingLayer
 
 
 
-                User user = new User("Admina", "admin@emil.bg");
+                User user = new User("admin", "admin@emil.bg");
                 IdentityResult res = await userManager.CreateAsync(user, "admin");
                 await userManager.AddToRoleAsync(user, Role.Administrator.ToString());
 

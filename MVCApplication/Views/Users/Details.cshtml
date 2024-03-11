@@ -1,5 +1,11 @@
 ﻿@model BusinessLayer.User
 
+@using BusinessLayer;
+@using Microsoft.AspNetCore.Identity;
+
+@inject UserManager<User> UserManager
+
+
 @{
     ViewData["Title"] = "Details";
 }
@@ -16,18 +22,14 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.UserName)
         </dd>
+
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Email)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Email)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PhoneNumber)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PhoneNumber)
-        </dd>
+
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Recipes)
         </dt>
@@ -41,7 +43,16 @@
                 @data
             }
         </dd>
-        
+
+        <dt class="col-sm-2">
+            Role
+        </dt>
+        <dd class = "col-sm-10">
+            @{
+                IList<string> role = await UserManager.GetRolesAsync(Model);
+            }  
+            @role.FirstOrDefault();
+        </dd>
     </dl>
 </div>
 <div>

@@ -25,8 +25,12 @@ namespace BusinessLayer
         public string Description { get; set; }
 
         [Required]
-        [StringLength(500, ErrorMessage = "The list of instructions is too long!")]
+        [StringLength(1000, ErrorMessage = "The list of instructions is too long!")]
         public string Instructions { get; set; }
+
+        [Required]
+        [StringLength(500, ErrorMessage = "The list of ingredients is too long!")]
+        public string Ingredients { get; set; }
 
         [Required]
         public DateTime DateOfPublish { get; set; }
@@ -47,11 +51,12 @@ namespace BusinessLayer
 
         public Recipe() { }
 
-        public Recipe(string title_, string description_, string instructions_, Category category_, User user_)
+        public Recipe(string title_, string description_, string instructions_, string ingredients_, Category category_, User user_)
         {
             this.Title = title_;
             this.Description = description_;
             this.Instructions = instructions_;
+            this.Ingredients = ingredients_;
             this.Category = category_;
             this.User = user_;
         }

@@ -70,7 +70,7 @@ namespace MVCApplication.Controllers
         {
             model.curRecipe.User = await _context.Users.FindAsync(model.curRecipe.UserId);
             model.curRecipe.Category = await _context.Categories.FindAsync(model.curRecipe.CategoryId);
-            Recipe recipe = new Recipe(model.curRecipe.Title, model.curRecipe.Description, model.curRecipe.Instructions, model.curRecipe.Category, model.curRecipe.User);
+            Recipe recipe = new Recipe(model.curRecipe.Title, model.curRecipe.Description, model.curRecipe.Instructions, model.curRecipe.Ingredients,  model.curRecipe.Category, model.curRecipe.User);
             recipe.DateOfPublish = DateTime.Now;
             ModelState.Clear();
             if (model.FileUpload == null)

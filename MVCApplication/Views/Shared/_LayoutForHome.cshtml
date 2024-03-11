@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using BusinessLayer;
+@model FIlteredRecipes
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -12,8 +14,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3" style="display:flex; flex-direction:column; justify-content:center; align-items:center;">
+    <header style="margin-bottom: 0;">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow" style="display:flex; flex-direction:column; justify-content:center; align-items:center;">
             <div class="container-fluid" >
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">MVCApplication</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -43,7 +45,34 @@
             </div>
         </nav>
     </header>
-    <div class="container">
+    <form class="sidebar" asp-action="Index" style="display:flex; flex-direction:column; justify-content:space-between;padding: 1%;padding-bottom:150px;">
+        <div class="sidebar-filters" style="width: 80%;">
+            <h2 style="font-size:1.5em;">Filter your search</h2>
+            <ul style="margin-top:45px;">
+                <li class="filter-type">
+                    <h3 class="filter-type-title">By Category</h3>
+                    <ul class="filter-type-content" style="font-size:1.15em;">
+                        @{
+                            int counter = 0;
+                        }
+                        @foreach (Category c in Model.Categories)
+                        {
+                            <li class="ftc-item">
+                                <input class="inpt-rad" type="radio" name="category" id="cat-@counter">
+                                <label class="inpt-label" for="cat-@counter" id="label-@counter">@c.Name</label>
+                            </li>
+                            counter++;
+                        }
+                        <input type="hidden" asp-for="CategoryForRecipes.Name" id="inpt-for-cat" />
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-submit">
+            <input type="submit" value="Filter" class="btn btn-primary">
+        </div>
+    </form>
+    <div class="container" style="width: 83%;margin-left:17%;z-index: -2;">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
@@ -54,9 +83,71 @@
         </div>
     </footer>
 
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
+<style>
+    a.navbar-brand {
+      white-space: normal;
+      text-align: center;
+      word-break: break-all;
+    }
+
+    a {
+      color: #0077cc;
+    }
+
+    .btn-primary {
+      color: #fff;
+      background-color: #1b6ec2;
+      border-color: #1861ac;
+    }
+
+    .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+      color: #fff;
+      background-color: #1b6ec2;
+      border-color: #1861ac;
+    }
+
+    .border-top {
+      border-top: 1px solid #e5e5e5;
+    }
+    .border-bottom {
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    .box-shadow {
+      box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+    }
+
+    button.accept-policy {
+      font-size: 1rem;
+      line-height: inherit;
+    }
+
+    .footer {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      white-space: nowrap;
+      line-height: 60px;
+    }
+
+</style>
+<script>
+    var allInpts = document.getElementsByClassName("inpt-rad");
+    var allLabels = document.getElementsByClassName("inpt-label");
+    console.log(allInpts);
+    console.log(allLabels[0]);
+    for (let i = 0; i < allInpts.length; i++){
+        console.log(i);
+        allInpts[i].addEventListener('click', () => {
+            var curLabel = document.getElementById('label-'+i);
+            document.getElementById('inpt-for-cat').value = curLabel.innerHTML;
+        });
+    }
+</script>
 </html>
