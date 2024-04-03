@@ -99,12 +99,12 @@ namespace MVCApplication.Areas.Identity.Pages.Account
                      values: new { area = "Identity", code },
                      protocol: Request.Scheme);
 
-                await _emailSender.SendEmailAsyncTask(
+                /*await _emailSender.SendEmailAsyncTask(
                     "monskipx@gmail.com",
                     "Reset Password",
                     $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
                 
-                
+                */
                 return RedirectToPage("./ForgotPasswordConfirmation");
 
                 /*

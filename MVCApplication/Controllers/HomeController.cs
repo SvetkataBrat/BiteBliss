@@ -67,6 +67,8 @@ namespace MVCApplication.Controllers
         [HttpPost]
         public async Task<IActionResult> Contact(ContactViewModel model)
         {
+            return View();
+            /*
             Response res = await EmailSenderManager.SendEmailFromContactsPage(model.Email, model.Username, model.Subject, model.Body);
             if (res.IsSuccessStatusCode)
             {
@@ -76,6 +78,7 @@ namespace MVCApplication.Controllers
             {
                 return RedirectToAction(nameof(UnSuccessfulContact));
             }
+            */
         }
 
         [Authorize(Roles = "Administrator, User")]
