@@ -26,7 +26,7 @@ namespace MVCApplication
             services.AddScoped<RecipeContext, RecipeContext>();
             services.AddScoped<IdentityManager, IdentityManager>();
             services.AddScoped<IdentityContext, IdentityContext>();
-            services.AddScoped<IEmailSender, EmailSenderManager>();
+            services.AddScoped<EmailSenderManager, EmailSenderManager>();
 
             services.AddDbContext<BiteBlissDBContext>(op =>
             {

@@ -1,0 +1,23 @@
+﻿.register-container {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.register-con {
+    width: 40%;
+    max-width: 560px;
+    min-width: 480px;
+}
+
+.page-title {
+    text-transform: uppercase;
+    font-size: 2em;
+    text-align: center;
+}
+
+.register-item {
+    margin: 15px 0;
+}

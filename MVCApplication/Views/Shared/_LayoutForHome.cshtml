@@ -9,9 +9,24 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/MVCApplication.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/filter.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/login.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/register.css" asp-append-version="true" />
+
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <lnk href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;1,100&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 </head>
 <body>
     <header style="margin-bottom: 0;">
@@ -37,7 +52,7 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="Index">View All Categories</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Test" asp-action="Create">TestController</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Contact">TestController</a>
                         </li>
                     </ul>
                     <partial name="_LoginPartial" />
@@ -46,11 +61,11 @@
         </nav>
     </header>
     <form class="sidebar" asp-action="Index" style="display:flex; flex-direction:column; justify-content:space-between;padding: 1%;padding-bottom:150px;">
-        <div class="sidebar-filters" style="width: 80%;">
-            <h2 style="font-size:1.5em;">Filter your search</h2>
+        <div class="sidebar-filters">
+            <h2 style="font-size:1.5em;">Филтрирай</h2>
             <ul style="margin-top:45px;">
                 <li class="filter-type">
-                    <h3 class="filter-type-title">By Category</h3>
+                    <h3 class="filter-type-title">Категория</h3>
                     <ul class="filter-type-content" style="font-size:1.15em;">
                         @{
                             int counter = 0;
@@ -58,7 +73,14 @@
                         @foreach (Category c in Model.Categories)
                         {
                             <li class="ftc-item">
-                                <input class="inpt-rad" type="radio" name="category" id="cat-@counter">
+                                @if (Model.CategoryForRecipes.Name == c.Name)
+                                {
+                                    <input class="inpt-rad" type="radio" name="category" id="cat-@counter" checked>
+                                }
+                                else
+                                {
+                                    <input class="inpt-rad" type="radio" name="category" id="cat-@counter">
+                                }
                                 <label class="inpt-label" for="cat-@counter" id="label-@counter">@c.Name</label>
                             </li>
                             counter++;

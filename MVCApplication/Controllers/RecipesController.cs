@@ -24,7 +24,7 @@ namespace MVCApplication.Controllers
         }
 
         // GET: Recipes
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator, User")]
         public async Task<IActionResult> Index()
         {
             var biteBlissDBContext = _context.Recipies.Include(r => r.Category).Include(r => r.User);
