@@ -1,19 +1,21 @@
-﻿@using MVCApplication.Models;
-@model ErrorViewModel
+﻿@page
+@using MVCApplication.Models;
+@model ErrorPageModel
 <div class="error-container">
-    <div class="error-code">404</div>
-    <div class="error-message">Oops! Page not found.</div>
-    <a href="/" class="error-link">Go to Homepage</a>
+    <div class="error-message">
+        <h2>@Html.DisplayFor(x => Model.ErrorMessage)</h2>
+    </div>
+    <a asp-controller="Home" asp-action="Index" class="error-link">Go to Homepage</a>
 </div>
 
 <style>
     .error-container {
         text-align: center;
         font-family: Arial, sans-serif;
-        background-color: #f4f4f4;
         margin: 0;
         padding: 0;
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
         height: 70vh;
@@ -38,5 +40,6 @@
     }
     .error-link:hover {
         background-color: #0056b3;
+        color: white;
     }
 </style>

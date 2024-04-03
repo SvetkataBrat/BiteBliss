@@ -21,9 +21,17 @@
         <label for="body">Message</label>
         <textarea id="body" name="body" rows="6" asp-for="Body" required></textarea>
 
-        <input type="submit" value="Submit">
+        <input type="submit" value="Send" id="contact-form">
     </form>
 </div>
+
+<script>
+    var text = document.getElementById('body');
+
+    document.getElementById('contact-form').addEventListener('click', (event) => {
+        text.value = text.value.replace(/(?:\r\n|\r|\n)/g, "<br>");
+    });
+</script>
 
 
 <style>

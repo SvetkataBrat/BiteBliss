@@ -6,6 +6,7 @@ using MVCApplication.Managers;
 using BusinessLayer;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using ServiceLayer;
+using MVCApplication.Controllers;
 
 namespace MVCApplication
 {
@@ -27,6 +28,7 @@ namespace MVCApplication
             services.AddScoped<IdentityManager, IdentityManager>();
             services.AddScoped<IdentityContext, IdentityContext>();
             services.AddScoped<EmailSenderManager, EmailSenderManager>();
+            services.AddScoped<HomeController, HomeController>();
 
             services.AddDbContext<BiteBlissDBContext>(op =>
             {

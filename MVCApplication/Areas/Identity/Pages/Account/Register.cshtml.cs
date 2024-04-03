@@ -50,6 +50,7 @@ namespace MVCApplication.Areas.Identity.Pages.Account
             _emailSender = emailSender;
             _identityManager = identityManager;
         }
+
         [BindProperty]
         public InputModel Input { get; set; }
 

@@ -113,7 +113,7 @@
     var textInput = document.getElementById('ingredients');
     document.getElementById('submitButton').addEventListener("click", (event) => {
         var text = document.getElementById('ingredients');
-        text.value = text.value.replace(/\n/g, '<br>');  // <-- THIS FIXES THE LINE BREAKS
+        text.value = text.value.replace('<br>', '/\n/g');  // <-- THIS FIXES THE LINE BREAKS
         //console.log(text);
         //document.getElementById('description-val').innerHTML = text;
     });
