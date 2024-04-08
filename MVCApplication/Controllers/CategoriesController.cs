@@ -8,36 +8,37 @@ using Microsoft.EntityFrameworkCore;
 using BusinessLayer;
 using DataLayer;
 using Microsoft.AspNetCore.Authorization;
+using ServiceLayer;
 
 namespace MVCApplication.Controllers
 {
     public class CategoriesController : Controller
     {
-        private readonly BiteBlissDBContext _context;
+        private readonly CategoryManager _manager;
 
-        public CategoriesController(BiteBlissDBContext context)
+        public CategoriesController(CategoryManager manager)
         {
-            _context = context;
+            _manager = manager;
         }
 
         // GET: Categories
         public async Task<IActionResult> Index()
         {
-              return _context.Categories != null ? 
-                          View(await _context.Categories.ToListAsync()) :
-                          Problem("Entity set 'BiteBlissDBContext.Categories'  is null.");
+
+            return _manager.ReadAllAsync() != null ? 
+                        View(await _manager.ReadAllAsync()) :
+                        Problem("Entity set 'BiteBlissDBContext.Categories'  is null.");
         }
 
         // GET: Categories/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int id)
         {
-            if (id == null || _context.Categories == null)
+            if (id == null || _manager.ReadAllAsync() == null)
             {
                 return NotFound();
             }
 
-            var category = await _context.Categories
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var category = await _manager.ReadAsync(id, true, true);
             if (category == null)
             {
                 return NotFound();
@@ -62,22 +63,21 @@ namespace MVCApplication.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(category);
-                await _context.SaveChangesAsync();
+                await _manager.CreateAsync(category);
                 return RedirectToAction(nameof(Index));
             }
             return View(category);
         }
 
         // GET: Categories/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id == null || _context.Categories == null)
+            if (id == null || _manager.ReadAllAsync() == null)
             {
                 return NotFound();
             }
 
-            var category = await _context.Categories.FindAsync(id);
+            var category = await _manager.ReadAsync(id, true, true);
             if (category == null)
             {
                 return NotFound();
@@ -101,8 +101,7 @@ namespace MVCApplication.Controllers
             {
                 try
                 {
-                    _context.Update(category);
-                    await _context.SaveChangesAsync();
+                    await _manager.UpdateAsync(category);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -121,15 +120,14 @@ namespace MVCApplication.Controllers
         }
 
         // GET: Categories/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int id)
         {
-            if (id == null || _context.Categories == null)
+            if (id == null || _manager.ReadAllAsync() == null)
             {
                 return NotFound();
             }
 
-            var category = await _context.Categories
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var category = await _manager.ReadAsync(id, true, true);
             if (category == null)
             {
                 return NotFound();
@@ -143,23 +141,22 @@ namespace MVCApplication.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Categories == null)
+            if (_manager.ReadAllAsync() == null)
             {
                 return Problem("Entity set 'BiteBlissDBContext.Categories'  is null.");
             }
-            var category = await _context.Categories.FindAsync(id);
+            var category = await _manager.ReadAsync(id, true, true);
             if (category != null)
             {
-                _context.Categories.Remove(category);
+                await _manager.DeleteAsync(id);
             }
             
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool CategoryExists(int id)
         {
-          return (_context.Categories?.Any(e => e.Id == id)).GetValueOrDefault();
+            return _manager.ReadAsync(id) != null;
         }
     }
 }

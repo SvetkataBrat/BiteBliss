@@ -11,39 +11,37 @@ using MVCApplication.Views.Recipes;
 using MVCApplication.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.IO;
+using ServiceLayer;
 
 namespace MVCApplication.Controllers
 {
     public class RecipesController : Controller
     {
+        private readonly RecipeManager _manager;
         private readonly BiteBlissDBContext _context;
 
-        public RecipesController(BiteBlissDBContext context)
+        public RecipesController(RecipeManager manager)
         {
-            _context = context;
+            _manager = manager;
         }
 
         // GET: Recipes
         [Authorize(Roles = "Administrator, User")]
         public async Task<IActionResult> Index()
         {
-            var biteBlissDBContext = _context.Recipies.Include(r => r.Category).Include(r => r.User);
-            return View(await biteBlissDBContext.ToListAsync());
+            return View(await _manager.ReadAllAsync(true, true));
         }
 
         // GET: Recipes/Details/5
         [Authorize(Roles = "Administrator, User")]
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int id)
         {
-            if (id == null || _context.Recipies == null)
+            if (id == null || _manager.ReadAsync(id) == null)
             {
                 return NotFound();
             }
             
-            var recipe = await _context.Recipies
-                .Include(r => r.Category)
-                .Include(r => r.User)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var recipe = await _manager.ReadAsync(id, true, true);
 
             if (recipe == null)
             {
@@ -88,11 +86,7 @@ namespace MVCApplication.Controllers
                     if (memoryStream.Length < 20971520)
                     {
                         recipe.Banner = memoryStream.ToArray();
-                        _context.Recipies.Add(recipe);
-                        User userFromDb = _context.Users.Find(recipe.UserId);
-                        userFromDb.Recipes = recipe.User.Recipes;
-                        _context.Update(userFromDb);
-                        await _context.SaveChangesAsync();
+                        await _manager.CreateAsync(recipe);
                         return RedirectToAction(nameof(Index));
                     }
                     else
@@ -143,8 +137,7 @@ namespace MVCApplication.Controllers
             {
                 try
                 {
-                    _context.Update(recipe);
-                    await _context.SaveChangesAsync();
+                    await _manager.UpdateAsync(recipe, true, true);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -166,17 +159,15 @@ namespace MVCApplication.Controllers
 
         // GET: Recipes/Delete/5
         [Authorize(Roles = "Administrator, User")]
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int id)
         {
             if (id == null || _context.Recipies == null)
             {
                 return NotFound();
             }
 
-            var recipe = await _context.Recipies
-                .Include(r => r.Category)
-                .Include(r => r.User)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var recipe = await _manager.ReadAsync(id, true, true);
+
             if (recipe == null)
             {
                 return NotFound();
@@ -191,17 +182,18 @@ namespace MVCApplication.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Recipies == null)
+            if (_manager.ReadAllAsync() == null)
             {
                 return Problem("Entity set 'BiteBlissDBContext.Recipies'  is null.");
             }
-            var recipe = await _context.Recipies.FindAsync(id);
+
+            var recipe = await _manager.ReadAsync(id, true, true);
+
             if (recipe != null)
             {
-                _context.Recipies.Remove(recipe);
+                await _manager.DeleteAsync(id);
             }
-            
-            await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 

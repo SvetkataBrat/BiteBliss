@@ -1,4 +1,4 @@
-﻿using BusinessLayer;
+﻿    using BusinessLayer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -117,7 +117,7 @@ namespace DataLayer
             }
         }
 
-        public async Task UpdateUserAsync(string id, string username, string email, string phone)
+        public async Task UpdateUserAsync(string id, string username, string email)
         {
             try
             {
@@ -126,7 +126,6 @@ namespace DataLayer
                     User user = await context.Users.FindAsync(id);
                     user.UserName = username;
                     user.Email = email;
-                    user.PhoneNumber = phone;
                     await userManager.UpdateAsync(user);
                 }
             }
@@ -145,6 +144,11 @@ namespace DataLayer
                 if (user == null)
                 {
                     throw new InvalidOperationException("User not found for deletion!");
+                }
+
+                foreach (Recipe r in user.Recipes)
+                {
+                    context.Recipies.Remove(r);
                 }
 
                 await userManager.DeleteAsync(user);

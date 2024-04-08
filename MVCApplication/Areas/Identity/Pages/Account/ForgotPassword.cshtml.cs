@@ -30,8 +30,6 @@ namespace MVCApplication.Areas.Identity.Pages.Account
         private readonly EmailSenderManager _emailSender;
         private readonly BiteBlissDBContext _context;
 
-        private readonly HomeController homeController;
-
         private readonly string allase64;
 
         private readonly int codeMaxLength;
@@ -47,10 +45,9 @@ namespace MVCApplication.Areas.Identity.Pages.Account
         {
             _userManager = userManager;
             _emailSender = emailSender;
-            codeMaxLength = 10;
+            codeMaxLength = 20;
             _context = biteBlissDBContext;
             allase64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-            homeController = controller;
         }
 
         [BindProperty]
@@ -118,7 +115,6 @@ namespace MVCApplication.Areas.Identity.Pages.Account
                     return RedirectToPage("./ForgotPasswordConfirmation");
                 }
             }
-
             return Page();
         }
     }

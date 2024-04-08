@@ -20,7 +20,6 @@ namespace ServiceLayer
 
         public async Task<UserResultSet> CreateUserAsync(string username, string password, string email, Role role)
         {
-
             IdentityResultSet<User> resultSet = await _identityContext.CreateUserAsync(username, password, email, role);
             return new UserResultSet(resultSet.IdentityResult, resultSet.Entity);
         }
@@ -40,7 +39,7 @@ namespace ServiceLayer
             return await _identityContext.ReadAllUsersAsync(useNavigationalProperties);
         }
 
-        public async Task UpdateUserAsync(string id, string username, string email, string phone)
+        public async Task UpdateUserAsync(string id, string username, string email)
         {
             await _identityContext.UpdateUserAsync(id, username, email, phone);
         }

@@ -1,5 +1,6 @@
 ﻿using BusinessLayer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,7 +49,15 @@ namespace DataLayer
         {
             try
             {
-                return await dBContext.Recipies.ToListAsync();
+                List<Recipe> query = await dBContext.Recipies.ToListAsync();
+                if (useNavigationalProperties)
+                {
+                    query = await dBContext.Recipies
+                            .Include(x => x.Category)
+                            .Include(x => x.User)
+                            .ToListAsync();
+                }
+                return query;
             }
             catch (Exception)
             {
@@ -60,7 +69,14 @@ namespace DataLayer
         {
             try
             {
-                return await dBContext.Recipies.FindAsync(key);
+                Recipe searchRecipe = await dBContext.Recipies.FindAsync(key);
+                if (useNavigationalProperties)
+                {
+                    searchRecipe = await dBContext.Recipies
+                            .Include(x => x.Category)
+                            .Include(x => x.User).FirstOrDefaultAsync(x => x.Id == key);
+                }
+                return searchRecipe;
             }
             catch (Exception)
             {

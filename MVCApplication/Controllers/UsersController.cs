@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using ServiceLayer;
 using System.Data;
 
 namespace MVCApplication.Controllers
@@ -11,10 +12,12 @@ namespace MVCApplication.Controllers
     public class UsersController : Controller
     {
         private readonly BiteBlissDBContext _context;
+        private readonly IdentityManager _manager;
 
-        public UsersController(BiteBlissDBContext context)
+        public UsersController(BiteBlissDBContext context, IdentityManager manager)
         {
             _context = context;
+            _manager = manager;
         }
 
         // GET: Foods
@@ -27,16 +30,15 @@ namespace MVCApplication.Controllers
 
         // GET: Foods/Details/5
         [Authorize(Roles = "Administrator")]
-        public async Task<IActionResult> Details(string? id)
+        public async Task<IActionResult> Details(string id)
         {
             if (id == null || _context.Users == null)
             {
                 return NotFound();
             }
 
-            var user = await _context.Users
-                .Include(r => r.Recipes)
-                .FirstOrDefaultAsync();
+            var user = await _manager.ReadUserAsync(id, true);
+
             if (user == null)
             {
                 return NotFound();
@@ -54,7 +56,7 @@ namespace MVCApplication.Controllers
                 return NotFound();
             }
 
-            var user = await _context.Users.FindAsync(id);
+            var user = await _manager.ReadUserAsync(id, true);
             if (user == null)
             {
                 return NotFound();
@@ -80,12 +82,11 @@ namespace MVCApplication.Controllers
             {
                 try
                 {
-                    User userFromDb = await _context.Users.FindAsync(user.Id);
+                    User userFromDb = await _manager.ReadUserAsync(id, true);
                     userFromDb.UserName = user.UserName;
                     userFromDb.Email = user.Email;
                     userFromDb.ProfilePicture = user.ProfilePicture;
-                    _context.Users.Update(userFromDb);
-                    await _context.SaveChangesAsync();
+                    await _manager.UpdateUserAsync(id, userFromDb.UserName, userFromDb.Email);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -105,16 +106,14 @@ namespace MVCApplication.Controllers
 
         // GET: Foods/Delete/5
         [Authorize(Roles = "Administrator")]
-        public async Task<IActionResult> Delete(string? id)
+        public async Task<IActionResult> Delete(string id)
         {
             if (id == null || _context.Users == null)
             {
                 return NotFound();
             }
 
-            var user = await _context.Users
-                .Include(r => r.Recipes)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var user = await _manager.ReadUserAsync(id, true);
             if (user == null)
             {
                 return NotFound();
@@ -133,20 +132,13 @@ namespace MVCApplication.Controllers
             {
                 return Problem("Entity set 'DiqnDbContext.Users'  is null.");
             }
-            var user = await _context.Users
-               .Include(r => r.Recipes)
-               .FirstOrDefaultAsync(m => m.Id == id);
+            var user = await _manager.ReadUserAsync(id, true);
+
             if (user != null)
             {
-                IEnumerable<Recipe> userRecipies = user.Recipes;
-                foreach (Recipe recipe in userRecipies)
-                {
-                    _context.Recipies.Remove(recipe);
-                }
-                _context.Users.Remove(user);
+                await _manager.DeleteUserByNameAsync(user.UserName);
             }
 
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
